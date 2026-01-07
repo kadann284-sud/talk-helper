@@ -125,7 +125,7 @@ async function loadData() {
     return { ...group, people: uniq };
   });
 
-  // 並び順：name のあいうえお（ざっくり）で
+  // name のあいうえお順（ざっくり）
   groups.sort((a, b) => String(a.name).localeCompare(String(b.name), "ja"));
 
   data = { groups };
@@ -136,16 +136,9 @@ function getSelectedGroupIds() {
   const checks = [...groupBox.querySelectorAll("input[type=checkbox][data-group-id]")];
   return checks.filter(c => c.checked).map(c => c.dataset.groupId);
 }
-
 function getSelectedGroups() {
   const ids = new Set(getSelectedGroupIds());
   return (data?.groups ?? []).filter(g => ids.has(g.id));
-}
-
-function getAllGroupsMap() {
-  const map = new Map();
-  for (const g of (data?.groups ?? [])) map.set(g.id, g);
-  return map;
 }
 
 function setGroupCheckboxes() {
@@ -159,7 +152,6 @@ function setGroupCheckboxes() {
     cb.dataset.groupId = g.id;
 
     cb.addEventListener("change", () => {
-      // 所属が変わったら相手選択をリセット（存在しない人になる可能性）
       personSelect.value = "";
       setPersonOptions();
       render();
@@ -170,7 +162,6 @@ function setGroupCheckboxes() {
 
     label.appendChild(cb);
     label.appendChild(span);
-
     groupBox.appendChild(label);
   }
 }
@@ -180,7 +171,8 @@ function personMatchesSearch(p, q) {
   const hay = [
     p.name,
     ...(p.tags ?? []),
-    ...Object.values(p.info ?? {}).map(v => String(v))
+    ...Object.values(p.info ?? {}).map(v => String(v)),
+    ...(p.questions ?? [])
   ].map(norm).join(" ");
   return hay.includes(q);
 }
@@ -200,18 +192,15 @@ function setPersonOptions() {
     return;
   }
 
-  // 選択所属の people を union
   const byId = new Map(); // personId -> person
   for (const g of selectedGroups) {
     for (const p of (g.people ?? [])) {
       if (!p?.id) continue;
-      // 検索は person の情報で絞る
       if (!personMatchesSearch(p, q)) continue;
       if (!byId.has(p.id)) byId.set(p.id, p);
     }
   }
 
-  // 名前順
   const people = [...byId.values()].sort((a, b) => String(a.name).localeCompare(String(b.name), "ja"));
 
   for (const p of people) {
@@ -236,24 +225,13 @@ function getSelectedPerson() {
   return null;
 }
 
-function getPersonGroupIds(pid) {
-  const groupIds = [];
-  for (const g of (data?.groups ?? [])) {
-    if ((g.people ?? []).some(p => p.id === pid)) groupIds.push(g.id);
-  }
-  return groupIds;
-}
-
 function getBestGroupContextForPerson(pid) {
-  // ログやメモで groupId を決めたい時：
-  // 選択中の所属の中でその人がいる最初の group を返す
   const selectedIds = getSelectedGroupIds();
   for (const gid of selectedIds) {
     const g = (data.groups ?? []).find(x => x.id === gid);
     if (!g) continue;
     if ((g.people ?? []).some(p => p.id === pid)) return g;
   }
-  // それでもなければ選択中の先頭
   const gid0 = selectedIds[0];
   return (data.groups ?? []).find(x => x.id === gid0) ?? null;
 }
@@ -270,17 +248,31 @@ function renderEmpty(msg) {
   resultArea.appendChild(el("div", "empty", msg));
 }
 
+function renderInfoKV(p, parentEl) {
+  const info = p.info ?? {};
+  const keys = Object.keys(info).filter(k => String(info[k] ?? "").trim() !== "");
+  if (!keys.length) {
+    parentEl.appendChild(el("div", "empty", "（相手の情報がまだありません）"));
+    return;
+  }
+  const kv = el("div", "kv");
+  for (const k of keys) {
+    kv.appendChild(el("div", "k", k));
+    kv.appendChild(el("div", "v", String(info[k])));
+  }
+  parentEl.appendChild(kv);
+}
+
 // ===================== question logging =====================
 function pushQuestionLog({ mode, questionText, targetPerson, groupContext }) {
-  const selectedGroups = getSelectedGroups();
-  if (selectedGroups.length === 0) return;
+  const groups = getSelectedGroups();
+  if (groups.length === 0) return;
 
   const type = mode === "asked" ? "question_asked" : "question_pass";
   const p = targetPerson || getSelectedPerson();
   if (!p) return;
 
-  // groupContext が渡されていればそれを優先（所属ごとの一覧から押した時など）
-  const g = groupContext || getBestGroupContextForPerson(p.id) || selectedGroups[0];
+  const g = groupContext || getBestGroupContextForPerson(p.id) || groups[0];
 
   const logs = loadLogs();
   logs.push(
@@ -331,49 +323,32 @@ function makeQuestionRow(questionText, targetPerson, groupContext) {
 // ===================== main render =====================
 function renderPersonView(p) {
   resultArea.innerHTML = "";
-
   const block = el("div", "block");
 
   const badgeRow = el("div", "badgeRow");
   badgeRow.appendChild(el("div", "title", p.name));
 
-  // 選択中所属の中で、この人が属する所属名をバッジ表示
   const selected = getSelectedGroups();
   const belong = selected.filter(g => (g.people ?? []).some(x => x.id === p.id));
   for (const g of belong) badgeRow.appendChild(el("div", "badge", `所属: ${g.name}`));
-
   for (const t of (p.tags ?? [])) badgeRow.appendChild(el("div", "badge", t));
   block.appendChild(badgeRow);
 
-  // info
-  const info = p.info ?? {};
-  const keys = Object.keys(info).filter(k => String(info[k] ?? "").trim() !== "");
-  if (keys.length) {
-    const kv = el("div", "kv");
-    for (const k of keys) {
-      kv.appendChild(el("div", "k", k));
-      kv.appendChild(el("div", "v", String(info[k])));
-    }
-    block.appendChild(kv);
-  } else {
-    block.appendChild(el("div", "empty", "（相手の情報がまだありません）"));
-  }
+  renderInfoKV(p, block);
 
-  // questions (dedup)
   const qSearch = norm(searchInput.value);
   const qs = (p.questions ?? [])
     .filter(x => String(x ?? "").trim() !== "")
     .filter(q => !qSearch || norm(q).includes(qSearch));
 
   const h = el("div", "badgeRow");
-  h.appendChild(el("div", "badge", "相手にすべき質問（ボタンでログ化）"));
+  h.appendChild(el("div", "badge", "質問（ボタンでログ化）"));
   block.appendChild(h);
 
   if (!qs.length) {
     block.appendChild(el("div", "empty", "（質問がありません / 検索に一致しません）"));
   } else {
     const ul = el("ul", "qList");
-    // person view なので groupContext は「最適な所属（選択中で所属している最初）」にする
     const gctx = getBestGroupContextForPerson(p.id);
     for (const q of qs) ul.appendChild(makeQuestionRow(q, p, gctx));
     block.appendChild(ul);
@@ -387,7 +362,7 @@ function renderGroupsAccordionView(groups) {
   const qSearch = norm(searchInput.value);
 
   if (groups.length === 0) {
-    renderEmpty("所属を選択してください。");
+    renderEmpty("所属を1つ以上選択してください。");
     return;
   }
 
@@ -395,13 +370,12 @@ function renderGroupsAccordionView(groups) {
     const wrap = el("div", "block");
 
     const head = el("div", "badgeRow");
-    head.appendChild(el("div", "badge", `所属「${g.name}」の質問（人ごとに開閉）`));
+    head.appendChild(el("div", "badge", `所属「${g.name}」`));
     wrap.appendChild(head);
 
     const people = (g.people ?? []).filter(p => {
       if (!qSearch) return true;
-      const hitQ = (p.questions ?? []).some(q => norm(q).includes(qSearch));
-      return hitQ || personMatchesSearch(p, qSearch);
+      return personMatchesSearch(p, qSearch);
     });
 
     if (!people.length) {
@@ -422,20 +396,22 @@ function renderGroupsAccordionView(groups) {
       const chev = el("div", "chev", open ? "v" : ">");
       left.appendChild(chev);
       left.appendChild(el("div", "title", p.name));
-
-      const meta = el("div", "accMeta");
-      meta.appendChild(el("div", "badge", `${(p.questions ?? []).length}問`));
-      for (const t of (p.tags ?? [])) meta.appendChild(el("div", "badge", t));
-      left.appendChild(meta);
-
+      left.appendChild(el("div", "badge", `${(p.questions ?? []).length}問`));
       headerBtn.appendChild(left);
 
       const body = el("div", "accBody");
       body.style.display = open ? "block" : "none";
 
+      // ★ここで info も表示（今回の要望）
+      renderInfoKV(p, body);
+
       const qs = (p.questions ?? [])
         .filter(x => String(x ?? "").trim() !== "")
         .filter(q => !qSearch || norm(q).includes(qSearch) || personMatchesSearch(p, qSearch));
+
+      const h = el("div", "badgeRow");
+      h.appendChild(el("div", "badge", "質問"));
+      body.appendChild(h);
 
       if (!qs.length) {
         body.appendChild(el("div", "empty", "（質問がありません / 検索に一致しません）"));
@@ -489,10 +465,7 @@ function logMatchesCurrentFilter(log) {
   const pid = personSelect.value || "";
   const q = norm(searchInput.value);
 
-  // グループ複数：選択中のどれかに一致
   if (gset.size > 0 && !gset.has(log.groupId)) return false;
-
-  // person 選択時：その person のログだけ
   if (pid && log.personId !== pid) return false;
 
   if (!q) return true;
@@ -543,9 +516,6 @@ function renderLogs() {
 
     card.appendChild(el("div", "logText", item.text));
 
-    const btnRow = el("div", "row");
-    btnRow.style.marginTop = "10px";
-
     const del = el("button", "smallBtn", "このログを削除");
     del.type = "button";
     del.addEventListener("click", () => {
@@ -555,9 +525,7 @@ function renderLogs() {
       renderSuggestions();
     });
 
-    btnRow.appendChild(del);
-    card.appendChild(btnRow);
-
+    card.appendChild(del);
     logArea.appendChild(card);
   }
 }
@@ -611,6 +579,7 @@ function deleteVisibleLogs() {
     alert("削除対象がありません。");
     return;
   }
+
   const ok = confirm("表示中のログをすべて削除します。よろしいですか？");
   if (!ok) return;
 
@@ -635,12 +604,10 @@ function daysSince(iso) {
 }
 
 function buildQuestionStats(logs) {
-  // key: groupId|personId|questionText
   const map = new Map();
   for (const l of logs) {
     if (l.meta?.kind !== "question") continue;
     const key = `${l.groupId}|${l.personId}|${l.text}`;
-
     const cur = map.get(key) || { asked: 0, pass: 0, lastAskedAt: "" };
 
     if (l.type === "question_asked") {
@@ -663,7 +630,6 @@ function collectCandidateQuestions() {
   const list = [];
 
   if (p) {
-    // person選択中：その人が属する選択中所属の質問を候補に（同じ質問は同一所属単位で扱う）
     for (const g of groups) {
       const personInGroup = (g.people ?? []).find(x => x.id === p.id);
       if (!personInGroup) continue;
@@ -676,14 +642,9 @@ function collectCandidateQuestions() {
     return list;
   }
 
-  // person未選択：選択所属全部から候補を集める
   for (const g of groups) {
     for (const person of (g.people ?? [])) {
-      if (qSearch) {
-        const hitQ = (person.questions ?? []).some(q => norm(q).includes(qSearch));
-        const hitP = personMatchesSearch(person, qSearch);
-        if (!hitQ && !hitP) continue;
-      }
+      if (qSearch && !personMatchesSearch(person, qSearch)) continue;
       for (const q of (person.questions ?? [])) {
         if (!q || !String(q).trim()) continue;
         if (qSearch && !norm(q).includes(qSearch) && !personMatchesSearch(person, qSearch)) continue;
@@ -691,7 +652,6 @@ function collectCandidateQuestions() {
       }
     }
   }
-
   return list;
 }
 
@@ -744,7 +704,7 @@ function renderSuggestions() {
   }
 
   for (const it of top) {
-    const card = el("div", "suggestCard");
+    const card = el("div", "block");
 
     const topRow = el("div", "badgeRow");
     topRow.appendChild(el("div", "badge", "候補"));
@@ -799,7 +759,6 @@ function safeKeepPersonSelection() {
 }
 
 function clearAll() {
-  // groups uncheck
   [...groupBox.querySelectorAll("input[type=checkbox][data-group-id]")].forEach(c => (c.checked = false));
   personSelect.value = "";
   searchInput.value = "";
