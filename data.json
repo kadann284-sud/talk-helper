@@ -1,0 +1,518 @@
+{
+    "groups": [
+        {
+            "id": "other",
+            "name": "その他",
+            "people": [
+                {
+                    "id": "p1",
+                    "name": "みさと",
+                    "tags": [],
+                    "info": {
+                        "大学": "静岡大学 経済学部。わりと暇らしい",
+                        "サークル": "過去：野球部マネージャー、バレー",
+                        "バイト・仕事": "県庁に就職予定。ニトリ／うなぎ屋／ライブスタッフ。過去：居酒屋×2、結婚式場",
+                        "生活": "瀬戸出身。運転よくする・できる",
+                        "趣味": "邦ロック",
+                        "音楽": "ねぐせ。／moon drop／RADWIMPS／Mrs. GREEN APPLE／Tele／sumika／SUPER BEAVER／クリープハイプ／シンガーズハイ／SEKAI NO OWARI",
+                        "食べ物": "ラーメン・ねぎとろが好き。ねぎ・玉ねぎが苦手",
+                        "恋愛": "付き合ったことはない。大学で好きな人がいた",
+                        "性格": "MBTI：ESFJ？",
+                        "家族": "弟が3歳下？",
+                        "その他": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "club,parttime,highschool",
+            "name": "サークル,バイト,高校",
+            "people": [
+                {
+                    "id": "p2",
+                    "name": "そうた(まる)",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "club,highschool",
+            "name": "サークル,高校",
+            "people": [
+                {
+                    "id": "p3",
+                    "name": "だいすけ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "club",
+            "name": "サークル",
+            "people": [
+                {
+                    "id": "p4",
+                    "name": "ようすけ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p22",
+                    "name": "しょうた(南山)",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p23",
+                    "name": "こうた",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p24",
+                    "name": "かける",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p25",
+                    "name": "ひさし",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p26",
+                    "name": "しん",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p27",
+                    "name": "つばさ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p28",
+                    "name": "しょうだい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p29",
+                    "name": "れおん",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p30",
+                    "name": "しゅうへい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p31",
+                    "name": "ももか",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p32",
+                    "name": "ひなの",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p33",
+                    "name": "すみれ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p34",
+                    "name": "まい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p35",
+                    "name": "あい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p36",
+                    "name": "もね",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p37",
+                    "name": "ひまり",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p38",
+                    "name": "りん",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p39",
+                    "name": "ねっち",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p41",
+                    "name": "ほんけ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p42",
+                    "name": "そうま(サークル)",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p43",
+                    "name": "たじま",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p44",
+                    "name": "しょうた(名城)",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "parttime",
+            "name": "バイト",
+            "people": [
+                {
+                    "id": "p5",
+                    "name": "はっとり",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p6",
+                    "name": "かいちゃん",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p40",
+                    "name": "そうま(バイト)",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p48",
+                    "name": "ももい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p49",
+                    "name": "かずき(みやた)",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p50",
+                    "name": "さかた",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "university",
+            "name": "大学",
+            "people": [
+                {
+                    "id": "p7",
+                    "name": "けいと",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p8",
+                    "name": "ゆいと",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p9",
+                    "name": "たかひろ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p10",
+                    "name": "てっぺい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p11",
+                    "name": "てつた",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "juniorhigh",
+            "name": "中学",
+            "people": [
+                {
+                    "id": "p13",
+                    "name": "こうき",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p14",
+                    "name": "たいが",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p15",
+                    "name": "ともの",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p16",
+                    "name": "じゅんせい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p47",
+                    "name": "かくや",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "juniorhigh,highschool",
+            "name": "中学,高校",
+            "people": [
+                {
+                    "id": "p12",
+                    "name": "けんしん",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        },
+        {
+            "id": "highschool",
+            "name": "高校",
+            "people": [
+                {
+                    "id": "p17",
+                    "name": "かんせい",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p18",
+                    "name": "いとゆう",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p19",
+                    "name": "こんだ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p20",
+                    "name": "ふみと",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p21",
+                    "name": "しょうだ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p45",
+                    "name": "たくみ",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                },
+                {
+                    "id": "p46",
+                    "name": "としき",
+                    "tags": [],
+                    "info": {
+                        "メモ": ""
+                    },
+                    "questions": []
+                }
+            ]
+        }
+    ]
+}

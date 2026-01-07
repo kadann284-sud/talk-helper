@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>会話補助（所属→相手）</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>会話補助（所属→相手）</h1>
+    <p class="sub">所属を複数選択 → 相手・質問・ログ・次回候補が連動</p>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="row">
+        <div class="label grow">
+          所属（複数選択）
+          <div id="groupBox" class="groupBox"></div>
+        </div>
+
+        <label class="label">
+          相手（選択所属の中）
+          <select id="personSelect" disabled></select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="label grow">
+          検索（相手/タグ/info/質問/ログ）
+          <input id="searchInput" type="text" placeholder="例：先輩 / ラーメン / 春休み" />
+        </label>
+
+        <button id="clearBtn" class="btn" type="button">クリア</button>
+      </div>
+
+      <div class="hint">
+        ✅ 所属は複数チェックOK（大学＋サークルなど）<br/>
+        ✅ 所属だけ：所属ごと → 人ごとに折りたたみ（> / v）<br/>
+        ✅ 質問の「聞いた/パス」でログ化＆候補に反映
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>表示</h2>
+        <div id="resultArea" class="result"></div>
+
+        <!-- ▼ 次回聞く候補 -->
+        <div class="block">
+          <div class="badgeRow">
+            <div class="badge">次回聞く候補（ログから自動提案）</div>
+            <div id="suggestCount" class="badge">0件</div>
+          </div>
+
+          <div class="row" style="margin-top:8px;">
+            <button id="refreshSuggestBtn" class="btn" type="button">候補を更新</button>
+            <div class="hint" style="margin:0; flex:1;">
+              パスが多い / 最近聞いた質問は出しません。候補の「聞いた/パス」もログに入ります。
+            </div>
+          </div>
+
+          <div id="suggestArea" class="result" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- ▼ メモ入力 -->
+        <div class="block">
+          <div class="badgeRow">
+            <div class="badge">会話ログ（メモ）</div>
+          </div>
+
+          <label class="label" style="min-width:100%;">
+            今回のメモ
+            <textarea id="memoInput" rows="4" placeholder="例：次は旅行の話 / 研究の締切の話を聞く"></textarea>
+          </label>
+
+          <div class="row" style="margin-top:10px;">
+            <button id="saveMemoBtn" class="btn" type="button">保存</button>
+            <button id="clearMemoBtn" class="btn" type="button">入力クリア</button>
+          </div>
+
+          <div class="row" style="margin-top:8px;">
+            <button id="deleteVisibleBtn" class="btn" type="button">表示中ログを全削除</button>
+            <button id="deleteAllBtn" class="btn" type="button">全ログ削除</button>
+          </div>
+        </div>
+
+        <!-- ▼ ログ一覧 -->
+        <div class="block">
+          <div class="badgeRow">
+            <div class="badge">ログ一覧</div>
+            <div id="logCount" class="badge">0件</div>
+          </div>
+          <div id="logArea" class="result"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>使い方</h2>
+        <ul class="tips">
+          <li>所属は複数チェックでき、相手候補は「選択所属の合体」です</li>
+          <li>所属だけの質問は「所属→人」で折りたたみできます</li>
+          <li>ログと次回候補は、選択中の所属でフィルタされます</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="./main.js"></script>
+</body>
+</html>
